@@ -1,0 +1,6 @@
+html {background-color: rgb(34,34,34)}
+.footer {background-color: rgb(54,54,54)}
+.navbar.is-primary,body.page-forum .forumpanel {background-color: rgb(64,64,64)}
+.has-background .hero-body {background: rgba(64,64,64,0.9)}
+body,.label,strong {color: rgb(170,170,170)}
+.pagnation.threadpagnation .pagnationcomponent, .pagnation.postpagnation .pagnationcomponent {background-color: rgb(54,54,54)}
