@@ -44,7 +44,7 @@ html, .navbar, .pagnation.postpagnation, .forumcategoryheader, .forumpanel {
     background-color: rgb(100, 100,100);
 }
 
-body.page-forum .threadviewsection .postblock {margin-bottom: none;}
+body.page-forum .threadviewsection .postblock {margin: 0;}
 
 body.page-forum .threadlistsection .threadblock.is-sticky, body.page-forum .threadlistsection .threadblock .threadmain .threadmeta .pagnationcomponent .page:hover, .navbar-alerts .alert-dropdown .alert-item > a:hover {
     background-color: rgb(170,170,170);
