@@ -1,104 +1,46 @@
-body.page-forum .threadlistsection .threadblock.is-sticky A,
-body.page-forum .threadlistsection .threadblock.is-sticky,
-changelists changelist ul li changetype,
-changelists changelist ul li changetype.is-a,
-changelists changelist ul li changetype.is-d {
+body.page-forum .threadlistsection .threadblock.is-sticky A, body.page-forum .threadlistsection .threadblock.is-sticky, changelists changelist ul li changetype, changelists changelist ul li changetype.is-a, changelists changelist ul li changetype.is-d {
     color: rgb(20,20,20);
 }
 
-body,
-.label,
-strong,
-.title,
-.ql-toolbar.ql-snow.toolbar button,
-.ql-container.ql-snow a,
-.ql-container.ql-snow .ql-tooltip,
-.navbar-alerts .alert-button,
-.tabs li.is-active a,
-.commits .change-entry .change {
+body, .label, strong, .title, .ql-toolbar.ql-snow.toolbar button, .ql-container.ql-snow .ql-tooltip, .navbar-alerts .alert-button, .tabs li.is-active a, .commits .change-entry .change, body.page-forum .threadviewsection .postblock .baninfo {
     color: rgb(170,170,170);
 }
 
-.subtitle,
-body.page-forum .threadviewsection .postblock .posthead a,
-body.page-forum .threadviewsection .postblock .posthead strong,
-body.page-forum .threadviewsection .postblock .posthead,
-body.page-forum .forumhead ul .content .subtitle,
-a:hover,
-body.page-forum .threadlistsection .threadblock .threadmain .threadmeta .pagnationcomponent .page,
-.navbar-alerts .alert-dropdown .alert-header .title, .navbar-alerts .alert-dropdown .alert-header .controls,
-changelists changelist information,
-.commits .change-entry .time a,
-.forumevents span.timeago,
-body.page-forum .forumhead ul .content .title a {
+.ql-container.ql-snow a {color: rgb(50,120,200);}
+
+.subtitle, body.page-forum .threadviewsection .postblock .posthead a, body.page-forum .threadviewsection .postblock .posthead strong, body.page-forum .threadviewsection .postblock .posthead, body.page-forum .forumhead ul .content .subtitle, a:hover, body.page-forum .threadlistsection .threadblock .threadmain .threadmeta .pagnationcomponent .page, .navbar-alerts .alert-dropdown .alert-header .title, .navbar-alerts .alert-dropdown .alert-header .controls, changelists changelist information, .commits .change-entry .time a, .forumevents span.timeago, body.page-forum .forumhead ul .content .title a {
     color: rgb(150,150,150);
 }
 
-a,
-.navbar-alerts .alert-dropdown .alert-item > a {color: rgb(200,200,200);}
+a, .navbar-alerts .alert-dropdown .alert-item > a {
+    color: rgb(200,200,200);
+}
 
-.pagnation.threadpagnation .pagnationcomponent,
-.pagnation.postpagnation .pagnationcomponent,
-.pagnation.threadpagnation,
-.pagnation.postpagnation,
-.footer {
-    background-color: rgb(54,54,54)
+.pagnation.threadpagnation .pagnationcomponent, .pagnation.postpagnation .pagnationcomponent, .pagnation.threadpagnation, .pagnation.postpagnation, .footer {
+    background-color: rgb(54,54,54);
 }
 
 html {
     background-color: rgb(34,34,34);
 }
 
-.navbar.is-primary,
-body.page-forum .forumpanel,
-.tooltip:after,
-.dropdown-content,
-.button.is-success {
+.navbar.is-primary, body.page-forum .forumpanel, .tooltip:after, .dropdown-content, .button.is-success {
     background-color: rgb(64,64,64);
 }
 
-.has-background .hero-body,
-body.page-blog-view .has-background .hero-body {
+.has-background .hero-body, body.page-blog-view .has-background .hero-body {
     background: rgba(64,64,64,0.9);
 }
 
-.ql-container.ql-snow .ql-editor postquote,
-.button.is-primary:hover,
-.button.is-primary.is-hovered,.button.is-primary:active,
-.button.is-primary.is-active,
-.navbar.is-primary .navbar-start > a.navbar-item:hover,
-.navbar.is-primary .navbar-start > a.navbar-item.is-active,
-.navbar.is-primary .navbar-start .navbar-link:hover,
-.navbar.is-primary .navbar-start .navbar-link.is-active,
-.navbar.is-primary .navbar-end > a.navbar-item:hover,
-.navbar.is-primary .navbar-end > a.navbar-item.is-active,
-.navbar.is-primary .navbar-end .navbar-link:hover,
-.navbar.is-primary .navbar-end .navbar-link.is-active,
-.navbar.is-primary .navbar-brand > a.navbar-item:hover,
-.navbar.is-primary .navbar-brand > a.navbar-item.is-active,
-.navbar.is-primary .navbar-brand .navbar-link:hover,
-.navbar.is-primary .navbar-brand .navbar-link.is-active,
-.button.is-primary[disabled],
-.pagnation.threadpagnation A.page:hover,
-.pagnation.postpagnation A.page:hover {
+.ql-container.ql-snow .ql-editor postquote, .button.is-primary:hover, .button.is-primary.is-hovered,.button.is-primary:active, .button.is-primary.is-active, .navbar.is-primary .navbar-start > a.navbar-item:hover, .navbar.is-primary .navbar-start > a.navbar-item.is-active, .navbar.is-primary .navbar-start .navbar-link:hover, .navbar.is-primary .navbar-start .navbar-link.is-active, .navbar.is-primary .navbar-end > a.navbar-item:hover, .navbar.is-primary .navbar-end > a.navbar-item.is-active, .navbar.is-primary .navbar-end .navbar-link:hover, .navbar.is-primary .navbar-end .navbar-link.is-active, .navbar.is-primary .navbar-brand > a.navbar-item:hover, .navbar.is-primary .navbar-brand > a.navbar-item.is-active, .navbar.is-primary .navbar-brand .navbar-link:hover, .navbar.is-primary .navbar-brand .navbar-link.is-active, .button.is-primary[disabled], .pagnation.threadpagnation A.page:hover, .pagnation.postpagnation A.page:hover {
     background-color: rgb(74, 74, 74);
 }
-.ql-container.ql-snow .ql-editor postquote .head,
-.button.is-primary,
-.pagnation.threadpagnation A.page.is-active,
-.pagnation.postpagnation A.page.is-active,
-.tooltip.is-primary:after,
-body.page-forum .threadlistsection .threadblock .threadmain .threadmeta .pagnationcomponent .page,
-.navbar-alerts .alert-dropdown .alert-item.alert-seen,
-.button.is-success:hover, .button.is-success.is-hovered,
-changelists changelist version,
-body.page-forum .threadviewsection .postblock .postmain .postexpand.expandable-overflown:after {
+
+.ql-container.ql-snow .ql-editor postquote .head, .button.is-primary, .pagnation.threadpagnation A.page.is-active, .pagnation.postpagnation A.page.is-active, .tooltip.is-primary:after, body.page-forum .threadlistsection .threadblock .threadmain .threadmeta .pagnationcomponent .page, .navbar-alerts .alert-dropdown .alert-item.alert-seen, .button.is-success:hover, .button.is-success.is-hovered, changelists changelist version, body.page-forum .threadviewsection .postblock .postmain .postexpand.expandable-overflown:after, body.page-forum .threadviewsection .postblock .baninfo {
     background-color: rgb(100, 100,100);
 }
 
-body.page-forum .threadlistsection .threadblock.is-sticky,
-body.page-forum .threadlistsection .threadblock .threadmain .threadmeta .pagnationcomponent .page:hover,
-.navbar-alerts .alert-dropdown .alert-item > a:hover {
+body.page-forum .threadlistsection .threadblock.is-sticky, body.page-forum .threadlistsection .threadblock .threadmain .threadmeta .pagnationcomponent .page:hover, .navbar-alerts .alert-dropdown .alert-item > a:hover {
     background-color: rgb(170,170,170);
 }
 
@@ -106,11 +48,17 @@ body.page-forum .threadlistsection .threadblock .threadmain .threadmeta .pagnati
     background-color: #272822;
 }
 
-.ql-container.ql-snow .ql-editor postquote {border: none;}
+.ql-container.ql-snow .ql-editor postquote {
+    border: none;
+}
 
-.navbar-alerts .alert-dropdown .alert-item.alert-seen {opacity: 0.9;}
+.navbar-alerts .alert-dropdown .alert-item.alert-seen {
+    opacity: 0.9;
+}
 
-.navbar-alerts .alert-dropdown .alert-item {border-top: 0.1px solid rgb(50,50,50);}
+.navbar-alerts .alert-dropdown .alert-item {
+    border-top: 0.1px solid rgb(50,50,50);
+}
 
 .ql-container.ql-snow {
     border: 1px solid rgba(170, 170,170, 0.5);
@@ -120,8 +68,21 @@ body.page-forum .threadlistsection .threadblock .threadmain .threadmeta .pagnati
     border-top: 6px solid rgb(54,54,54);
 }
 
-.box {margin-top: 25px; background-color: rgb(50,50,50); color: rgb(150,150,150);}
+.box {
+    margin-top: 25px;
+    background-color: rgb(50,50,50);
+    color: rgb(150,150,150);
+}
 
-.tabs ul {border-bottom-color: rgb(80,80,80);}
-.tabs li.is-active a {border-bottom-color: rgb(170,170,170);}
-.tabs a {border-bottom-color: rgb(130,130,130); color: rgb(100,100,100);}
+.tabs ul {
+    border-bottom-color: rgb(80,80,80);
+}
+
+.tabs li.is-active a {
+    border-bottom-color: rgb(170,170,170);
+}
+
+.tabs a {
+    border-bottom-color: rgb(130,130,130);
+    color: rgb(100,100,100);
+}
