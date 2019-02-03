@@ -1,0 +1,191 @@
+854
+	attempt to call method 'a' (a b value)
+766
+	attempt to index global 'a' (a b value)
+641
+	bad argument #a to 'b' (c expected, got d)
+439
+	attempt to index local 'a' (a b value)
+358
+	attempt to call field 'a' (a b value)
+324
+	'a' expected near 'b'
+306
+	attempt to index field 'a' (a b value)
+291
+	Tried to use a NULL entity!
+247
+	'a' expected (to close 'b' at line c) near 'd'
+243
+	attempt to call global 'a' (a b value)
+158
+	unexpected symbol near 'a'
+140
+	attempt to index a a value
+115
+	attempt to compare a with b
+97
+	function arguments expected near 'a'
+86
+	attempt to concatenate a a value
+76
+	Module not found!
+72
+	Tried to use invalid object (type a) (Object was NULL or not of the right type)
+62
+	attempt to perform arithmetic on local 'a' (a b value)
+57
+	attempt to perform arithmetic on field 'a' (a b value)
+51
+	attempt to index upvalue 'a' (a b value)	Calling net.Start with unpooled message name! [http://goo.gl/qcx0y]
+40
+	attempt to concatenate global 'a' (a b value)
+39
+	attempt to index a string value with bad key ('a' is not part of the string library)
+31
+	'a' isn't a valid font
+30
+	bad key to string index (a expected, got b)
+29
+	attempt to concatenate field 'a' (a b value)
+28
+	invalid escape sequence near 'a'	attempt to concatenate local 'a' (a b value)
+25
+	attempt to perform arithmetic on a a value
+19
+	attempt to perform arithmetic on global 'a' (a b value)
+14
+	Couldn't load module library!
+13
+	unfinished string near 'a'
+12
+	net.ReadType: Couldn't read type a
+11
+	attempt to call local 'a' (a b value)	attempt to call upvalue 'a' (a b value)	attempt to call a a value
+8
+	attempt to perform arithmetic on upvalue 'a' (a nil value)	stack overflow	attempt to compare two a values
+7
+	attempt to get length of local 'a' (a b value)	Tried to use a NULL physics object!	malformed number near 'a'
+6
+	Couldn't find function in library!	attempt to get length of field 'a' (a b value)
+5
+	<name> or 'a' expected near 'b'	syntax error near 'a'	bad argument #a to 'b' (value expected)
+4
+	calling 'a' on bad self (b expected, got c)
+3
+	attempt to yield across C-call boundary	timer.Simple - called wrong!	attempt to get length of global 'a' (a b value)	attempt to concatenate upvalue 'a' (a b value)	unfinished long string near '<eof>'	'for' limit must be a number
+2
+	invalid order function for sorting	Player is NULL(!?)	net.WriteType: Couldn't write a (type b)	Could not load module!	no loop to break
+1
+	function at line a has more than b local variables	error loading module 'a' from file 'b':	calling 'a' on bad self (attempt to modify ConVar not created by Lua)	ambiguous syntax	attempt to perform arithmetic on upvalue 'a' (a table value)	control structure too long near '<eof>'	attempt to index field "a" of a nil value (bytecode local variable)	unfinished capture	bad argument #a to 'b' (no value)	function at line a has more than b upvalues	attempt to index local value 'a' (a b value)	attempt to get length of a nil value
+854
+	attempt to call method 'a' (a b value)
+766
+	attempt to index global 'a' (a b value)
+641
+	bad argument #a to 'b' (c expected, got d)
+439
+	attempt to index local 'a' (a b value)
+358
+	attempt to call field 'a' (a b value)
+324
+	'a' expected near 'b'
+306
+	attempt to index field 'a' (a b value)
+291
+	Tried to use a NULL entity!
+247
+	'a' expected (to close 'b' at line c) near 'd'
+243
+	attempt to call global 'a' (a b value)
+158
+	unexpected symbol near 'a'
+140
+	attempt to index a a value
+115
+	attempt to compare a with b
+97
+	function arguments expected near 'a'
+86
+	attempt to concatenate a a value
+76
+	Module not found!
+72
+	Tried to use invalid object (type a) (Object was NULL or not of the right type)
+62
+	attempt to perform arithmetic on local 'a' (a b value)
+57
+	attempt to perform arithmetic on field 'a' (a b value)
+51
+	attempt to index upvalue 'a' (a b value)
+	Calling net.Start with unpooled message name! [http://goo.gl/qcx0y]
+40
+	attempt to concatenate global 'a' (a b value)
+39
+	attempt to index a string value with bad key ('a' is not part of the string library)
+31
+	'a' isn't a valid font
+30
+	bad key to string index (a expected, got b)
+29
+	attempt to concatenate field 'a' (a b value)
+28
+	invalid escape sequence near 'a'
+	attempt to concatenate local 'a' (a b value)
+25
+	attempt to perform arithmetic on a a value
+19
+	attempt to perform arithmetic on global 'a' (a b value)
+14
+	Couldn't load module library!
+13
+	unfinished string near 'a'
+12
+	net.ReadType: Couldn't read type a
+11
+	attempt to call local 'a' (a b value)
+	attempt to call upvalue 'a' (a b value)
+	attempt to call a a value
+8
+	attempt to perform arithmetic on upvalue 'a' (a nil value)
+	stack overflow
+	attempt to compare two a values
+7
+	attempt to get length of local 'a' (a b value)
+	Tried to use a NULL physics object!
+	malformed number near 'a'
+6
+	Couldn't find function in library!
+	attempt to get length of field 'a' (a b value)
+5
+	<name> or 'a' expected near 'b'
+	syntax error near 'a'
+	bad argument #a to 'b' (value expected)
+4
+	calling 'a' on bad self (b expected, got c)
+3
+	attempt to yield across C-call boundary
+	timer.Simple - called wrong!
+	attempt to get length of global 'a' (a b value)
+	attempt to concatenate upvalue 'a' (a b value)
+	unfinished long string near '<eof>'
+	'for' limit must be a number
+2
+	invalid order function for sorting
+	Player is NULL(!?)
+	net.WriteType: Couldn't write a (type b)
+	Could not load module!
+	no loop to break
+1
+	function at line a has more than b local variables
+	error loading module 'a' from file 'b':
+	calling 'a' on bad self (attempt to modify ConVar not created by Lua)
+	ambiguous syntax
+	attempt to perform arithmetic on upvalue 'a' (a table value)
+	control structure too long near '<eof>'
+	attempt to index field "a" of a nil value (bytecode local variable)
+	unfinished capture
+	bad argument #a to 'b' (no value)
+	function at line a has more than b upvalues
+	attempt to index local value 'a' (a b value)
+	attempt to get length of a nil value
