@@ -87,11 +87,6 @@ Path mode requires full path starting from disk (C:/)
 
 Example: folder is in C:/Users/Spar/Desktop/ named My Unique DarkRP. You need to type or drag: C:/Users/Spar/Desktop/My Unique DarkRP or "C:/Users/Spar/Desktop/My Unique DarkRP"
 
-
-
-## Images
-
-
 ## Known Problems
 
  1. If you put LuaWorkshopper in protected folder, it won't be able to create config and error file. To fix that: Put in unprotected folder such as Desktop or Run LuaWorkshopper as Administrator.
