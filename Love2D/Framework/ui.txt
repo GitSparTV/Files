@@ -1,0 +1,51 @@
+[x]	Button
+	[ ]	Radio button
+	[ ]	Check box
+	[x] Binder button
+	[ ]	Toggle button
+[ ]	Context menu
+[ ]	Drop-down list
+[ ]	Hamburger button + Accordion + Disclosure widget
+[ ]	Ribbon
+[ ]	Tab
+[ ]	Toolbar
+[ ]	Breadcrumbs
+[ ]	Menu
+[ ]	Pie menu
+[ ]	Color picker
+[ ]	Combo box
+[ ]	Date picker
+[ ]	List box
+[x]	Scrollbar
+[x] Scroll panel
+[ ]	Slider
+[ ]	Spinner
+[ ]	Text box
+[x]	Icon
+[x] Image
+[x]	Label
+- Progress indicator
+	[x]	Progress bar
+		[x] Intermediate Progress bar
+		[x] Circle progress
+	[x]	Throbber
+[ ]	Tree view
+[x]	Panel
+	[ ]	Status bar
+- Window
+	[ ]	Window decoration
+	[ ]	Collapsible panel
+		[ ]	Drawer
+		[ ]	Sidebar
+	[ ]	Modal window
+		[ ]	Dialog box
+		[ ]	Alert dialog box
+		[ ]	File dialog
+		[ ]	Palette window
+	[ ]	Canvas
+	[ ]	Cover Flow
+	[ ]	Bubble Flow
+	[ ]	Toast
+	[ ]	Balloon help
+	[ ]	Tooltip
+	[ ]	Popover
