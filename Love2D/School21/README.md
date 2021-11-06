@@ -1,6 +1,6 @@
 # Bruteforcing robot combinations to get to the cell with white dot.
 
-This task was taked from School 21 from Sberbank, this is one of the tests to get in this school.
+This task was taken from [School 21 by Sberbank](https://21-school.ru/), this is one of the tests to get in this school.
 
 I got stuck on this level, I assumed it's impossible and tried to bruteforce all combinations for the correct answer. Didn't got it.
 
