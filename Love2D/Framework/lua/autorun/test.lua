@@ -1,0 +1,67 @@
+-- local p = gui.Create("ScrollPanel")
+-- p:SetSize(300,300)
+-- p:SetPos(200,200)
+-- GP = p
+-- print("Adding panel")
+-- for i=1,20 do
+-- 	timer.Simple(i,function()
+-- 	local a = p:Add("Panel")
+-- 	a:SetName("InCanvas"..i)
+-- 	a:SetPos(0,85 * (i-1))
+-- 	a:SetSize(300,85)
+-- 	a:Dock(TOP)
+-- 	local t = a:Add("Panel")
+-- 	t:SetName("InCanvasImage"..i)
+-- 	t:Dock(FILL)
+-- 	if not EX then EX = t end
+-- 	t:DockMargin(5,5,5,5)
+-- 	-- t:SetText("1234567890\n1234567890")
+-- 	-- if not EX then EX = t end
+-- 	-- t.wrap = true
+-- 	-- t:SizeToContents()
+-- 	-- t:Dock(TOP)
+-- 	-- t:AppendSize(0,5)
+-- 	-- t:DockMargin(5,5,5,5)
+-- 	-- a:InvalidateLayout(true)
+-- 	-- a:SizeToChildren(false,true)
+-- 	-- a:AppendSize(0,5)
+-- 	end)
+-- end
+-- -- timer.Simple(2,function()
+-- 	-- p:ScrollToChild(EX)
+-- -- end)
+-- local p = gui.Create("Panel")
+-- p:SetSize(300,300)
+-- p:SetPos(100,100)
+-- local a = p:Add("Panel")
+-- a:SetSize(50,50)
+-- a:SetPos(10,10)
+-- -- local a = p:Add("Panel")
+-- -- a:SetSize(50,50)
+-- -- a:SetPos(-25,300-25)
+-- local a = p:Add("Panel")
+-- a:SetSize(50,50)
+-- a:SetPos(300-25,300-25)
+-- EX = a
+-- function a:Think()
+-- 	local cx,cy = input.GetCursorPos()
+-- 	self:SetPos(cx - 100,cy - 100)
+-- end
+-- local a = a:Add("Panel")
+-- a:SetSize(40,40)
+-- a:SetPos(5,5)
+-- local a = a:Add("Panel")
+-- a:SetSize(30,30)
+-- a:SetPos(5,5)
+
+local a = gui.Create("Menu")
+a:SetPos(10, 100)
+a:SetSize(50, 25)
+a:SetName("MENU")
+
+for i = 1, 30 do
+	timer.Simple(i / 30, function()
+		a:AddSubMenu(i):AddOption(i, "icons/add.png")
+		a:AddSeparator()
+	end)
+end
