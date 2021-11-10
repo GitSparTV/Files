@@ -1,3 +1,5 @@
+*See also: **[Unversity admission advisor](https://github.com/GitSparTV/GitSparTV/blob/main/lua-portfolio.md#unversity-admission-advisor)***
+
 Personal bot made with VK API running in Garry's Mod server instance.
 
 Can tell when the lesson is over, what/where the next lesson is, the name of the teacher and schedule.
