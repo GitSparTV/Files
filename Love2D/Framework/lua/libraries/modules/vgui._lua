@@ -1,0 +1,285 @@
+vgui = {}
+vgui.Registry = {}
+-- require("modules.panelmeta")
+local PanelMeta = debug.getregistry().Panel
+local PanelList = {}
+local ZPanelList = {}
+
+function vgui.GetPanels()
+	return PanelList
+end
+
+hook.Add("HUDPaint", "DermaDraw", function()
+	for k, v in pairs(ZPanelList) do
+		if IsValid(v) and not v:GetParent() then
+			v:MetaPaint()
+		end
+	end
+
+	-- if not clicked then return end
+	-- local a,b,c,d = clicked:GetVisiblePixels()
+	-- c,d = c-a,d-b
+
+	-- draw.RoundedBox(2,a,b,c,d,Color(0,100,0,100))
+	-- draw.RoundedBox(8,a-4,b-4,8,8,Color(255,0,0)*math.sin(CurTime()*5))
+	-- draw.RoundedBox(8,a+c-4,b-4,8,8,Color(255,0,0)*math.sin(CurTime()*5))
+	-- draw.RoundedBox(8,a-4,b+d-4,8,8,Color(255,0,0)*math.sin(CurTime()*5))
+	-- draw.RoundedBox(8,a+c-4,b+d-4,8,8,Color(255,0,0)*math.sin(CurTime()*5))
+end)
+
+hook.Add("Think", "DermaThink", function()
+	ZPanelList = {}
+
+	for k, v in ipairs(PanelList) do
+		table.insert(ZPanelList, k + v:GetZPos(), v)
+	end
+
+	for k, v in pairs(ZPanelList) do
+		if IsValid(v) then
+			v:Think()
+			v:AnimationThink()
+		end
+	end
+end)
+
+local function CheckHover(panel, x, y)
+	local X, Y = panel:LocalToScreen(0, 0)
+	local W, T = panel:GetSize()
+	if X <= x and x <= X + W and Y <= y and y <= Y + T then return true end
+
+	return false
+end
+
+function CheckVisible(p,x,y)
+	local X, Y, W, T= p:GetVisiblePixels()
+	if X <= x and x <= W and Y <= y and y <= T then return true end
+
+	return false
+end
+
+hook.Add("MouseMoved", "DermaMouseMoved", function(x, y)
+	local hit = false
+	local lastUp
+
+	for k, v in pairs(ZPanelList) do
+		if IsValid(v) and v:IsMouseInputEnabled() then
+			if v._MouseCapture then
+				v:CursorThink("move", x, y)
+			elseif CheckVisible(v,x,y) and CheckHover(v, x, y) then
+				hit = true
+				lastUp = v
+			end
+		end
+	end
+
+	if not hit and vgui.GetHoveredPanel() then
+		vgui.GetHoveredPanel():CursorThink("exit", x, y)
+		vgui.SetHoveredPanel(nil)
+	elseif hit then
+		if vgui.GetHoveredPanel() == lastUp then
+			lastUp:CursorThink("move", x, y)
+		else
+			if vgui.GetHoveredPanel() then vgui.GetHoveredPanel():CursorThink("exit", x, y) end
+			vgui.SetHoveredPanel(lastUp)
+			lastUp:CursorThink("enter", x, y)
+		end
+	end
+end)
+
+hook.Add("MousePressed", "DermaMousePressed", function(x, y, but)
+	for k, v in pairs(ZPanelList) do
+		if IsValid(v) and v:IsMouseInputEnabled() then
+			if (v._MouseCapture or vgui.GetHoveredPanel() == v) then
+				v:OnMousePressed(but)
+				v.Focused = true
+			else
+				if v.Focused then
+					v:OnFocusChanged()
+				end
+
+				v.Focused = false
+			end
+		end
+	end
+end)
+
+hook.Add("MouseReleased", "DermaMouseReleased", function(x, y, but)
+	for k, v in pairs(ZPanelList) do
+		if IsValid(v) and v:IsMouseInputEnabled() and (v._MouseCapture or vgui.GetHoveredPanel() == v) then
+			v:OnMouseReleased(but)
+		end
+	end
+end)
+
+hook.Add("MouseWheeled", "DermaMouseWheeled", function(delta)
+	for k, v in pairs(ZPanelList) do
+		if IsValid(v) and v:IsMouseInputEnabled() and CheckVisible(v,input.GetCursorPos()) and CheckHover(v, input.GetCursorPos()) then
+			v:OnMouseWheeled(delta)
+		end
+	end
+end)
+
+hook.Add("KeyPress", "DermaKeyPress", function(a)
+	for k, v in pairs(PanelList) do
+		if IsValid(v) and v:IsKeyboardInputEnabled() and v.Focused then
+			v:OnKeyCodePressed(a)
+		end
+	end
+end)
+
+hook.Add("TextInput", "DermaTextInput", function(a)
+	for k, v in pairs(PanelList) do
+		if IsValid(v) and v:IsKeyboardInputEnabled() and v.Focused then
+			v:OnKeyCodeTyped(a)
+		end
+	end
+end)
+
+function vgui.GetElementTable(name)
+	return vgui.Registry[name]
+end
+
+function vgui.Remove(panel)
+	for k, v in ipairs(PanelList) do
+		if v == panel then
+			table.remove(PanelList, k)
+		end
+	end
+
+	panel:CursorThink("exit")
+
+	if vgui.GetHoveredPanel() == panel then
+		vgui.SetHoveredPanel(nil)
+	end
+end
+
+function vgui.GetHoveredPanel()
+	return vgui.Hovered
+end
+
+function vgui.SetHoveredPanel(p)
+	vgui.Hovered = p
+end
+
+function vgui.GetRegistry()
+	return vgui.Registry
+end
+
+function vgui.Create(name, parent)
+	if not vgui.Registry[name] then
+		ErrorNoHalt("No Element like " .. name .. " is registered")
+
+		return
+	end
+
+	if vgui.Registry[name].BaseName then
+		local ElementMeta = vgui.Registry[name]
+		local panel = vgui.Create(ElementMeta.BaseName, parent)
+
+		if not panel then
+			ErrorNoHalt("No Base like " .. ElementMeta.BaseName .. " is registered")
+
+			return
+		end
+
+		panel = setmetatable(panel, {
+			__index = ElementMeta,
+			__tostring = function(self) return self:__tostring() end
+		})
+
+		panel._InitDone = false
+
+		-- panel:Prepare()
+		if panel.Init then
+			panel:Init()
+		end
+
+		timer.Simple(0, function()
+			panel:InvalidateLayout()
+		end)
+
+		panel._InitDone = true
+
+		return panel
+	end
+
+	return vgui.CreateBase(name, parent)
+end
+
+function vgui.CreateBase(name, parent)
+	if not vgui.Registry[name] then
+		ErrorNoHalt("No Base Element like " .. name .. " is registered")
+
+		return
+	end
+
+	local ElementMeta = vgui.Registry[name]
+
+	if not ElementMeta.BaseClass then
+		ElementMeta.BaseClass = vgui.Registry[ElementMeta.BaseName]
+	end
+
+	local panel = setmetatable({}, {
+		__index = ElementMeta,
+		__tostring = function(self) return self:__tostring() end
+	})
+
+	panel._InitDone = false
+	panel:Prepare()
+
+	if panel.Init then
+		panel:Init()
+	end
+
+	timer.Simple(0, function()
+		panel:InvalidateLayout()
+	end)
+
+	panel._InitDone = true
+
+	if parent then
+		panel:SetParent(parent)
+	end
+
+	table.insert(PanelList, panel)
+
+	return panel
+end
+
+function vgui.Register(name, meta, base)
+	meta.BaseName = base or "Panel"
+	meta.ElementName = name
+	local m = {}
+
+	function m.__index(t, k)
+		local base = vgui.Registry[rawget(meta, "BaseName")]
+
+		return rawget(t, k) or base[k] or PanelMeta[k]
+	end
+
+	function m:__tostring()
+		return self:__tostring()
+	end
+
+	setmetatable(meta, m)
+	vgui.Registry[name] = meta
+	print(name .. " registered")
+
+	return meta
+end
+
+function vgui.RegisterBase(name, meta)
+	local m = {}
+	meta.ElementName = name
+
+	function m.__index(t, k)
+		return rawget(t, k) or PanelMeta[k]
+	end
+
+	function m:__tostring()
+		return self:__tostring()
+	end
+
+	setmetatable(meta, m)
+	vgui.Registry[name] = meta
+end

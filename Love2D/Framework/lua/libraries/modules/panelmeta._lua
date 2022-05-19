@@ -1,0 +1,777 @@
+local PANELMeta = {}
+PANELMeta.__type = "panel"
+PANELMeta.__index = PANELMeta
+debug.getregistry().Panel = PANELMeta
+
+function PANELMeta:Prepare()
+	self.x = 0
+	self.y = 0
+	self.w = 16
+	self.t = 16
+	self.ZPos = 0
+	self.CursorOnHover = "arrow"
+	self.Children = {}
+	self.Margin = {0, 0, 0, 0}
+	self.Padding = {0, 0, 0, 0}
+	self.dockMatrix = {}
+	self.dock = NODOCK
+	self.KeyLearn = false
+	self.MouseLearn = false
+	self._MouseCapture = false
+	self.Visible = true
+	self.InvalidateDock = true
+	self.Focused = false
+end
+
+function PANELMeta:IsInitCalled()
+	return self._InitDone
+end
+
+function PANELMeta:__tostring()
+	return "[PANEL] [" .. (self.Name or self.ElementName) .. (self.BaseElement and " (" .. self.BaseElement .. ")" or "") .. "] [" .. (self.x or 0) .. ", " .. (self.y or 0) .. ", " .. (self.w or 0) .. ", " .. (self.t or 0) .. "]"
+end
+
+function PANELMeta:OnCursorMoved(x, y)
+end
+
+function PANELMeta:OnCursorEntered(x, y)
+end
+
+function PANELMeta:OnCursorExited(x, y)
+end
+
+function PANELMeta:OnMousePressed()
+end
+
+function PANELMeta:OnMouseReleased()
+end
+
+function PANELMeta:OnMouseWheeled(delta)
+end
+
+function PANELMeta:MouseCapture(b)
+	self._MouseCapture = b
+end
+
+function PANELMeta:CursorThink(event, x, y)
+	if event == "enter" then
+		self:OnCursorEntered(x, y)
+		input.SetCursor(self.CursorOnHover)
+	elseif event == "exit" then
+		self:OnCursorExited(x, y)
+		input.SetCursor("arrow")
+	elseif event == "move" then
+		self:OnCursorMoved(x, y)
+		input.SetCursor(self.CursorOnHover)
+	end
+end
+
+function PANELMeta:Remove()
+	self.Removing = true
+
+	if self.OnRemove then
+		self:OnRemove()
+	end
+
+	for k, v in ipairs(self:GetChildren()) do
+		v:Remove()
+	end
+
+	for k, v in pairs(self) do
+		self[k] = nil
+	end
+
+	vgui.Remove(self)
+end
+
+function PANELMeta:IsRemoving()
+	return self.Removing
+end
+
+function PANELMeta:IsVisible()
+	return self.Visible and self:IsOnScreen()
+end
+
+function PANELMeta:SetVisible(v)
+	self.Visible = v
+end
+
+function PANELMeta:SetCursor(name)
+	self.CursorOnHover = name
+end
+
+function PANELMeta:Think()
+end
+
+function PANELMeta:IsValid()
+	if self:IsRemoving() then return false end
+
+	return true
+end
+
+function PANELMeta:Center()
+	self:SetPos(ScrW() / 2 - self.w / 2, ScrH() / 2 - self.t / 2)
+end
+
+function PANELMeta:SetKeyboardInputEnabled(bool)
+	self.KeyLearn = bool
+end
+
+function PANELMeta:IsKeyboardInputEnabled()
+	return self.KeyLearn
+end
+
+function PANELMeta:OnKeyCodePressed()
+end
+
+function PANELMeta:OnKeyCodeTyped()
+end
+
+function PANELMeta:SetMouseInputEnabled(bool)
+	self.MouseLearn = bool
+end
+
+function PANELMeta:IsMouseInputEnabled()
+	return self.MouseLearn or self._MouseCapture
+end
+
+function PANELMeta:IsHovered()
+	return vgui.GetHoveredPanel() == self
+end
+
+function PANELMeta:SetPos(x, y)
+	if (math.floor(x) or self.x) == self.x and (math.floor(y) or self.y) == self.y then return end
+	self.x = math.floor(x) or self.x
+	self.y = math.floor(y) or self.y
+end
+
+function PANELMeta:SetSize(w, t)
+	if (w and math.floor(w) or self.w) == self.w and (t and math.floor(t) or self.t) == self.t then return end
+
+	if (w or self.w) < 0 then
+		w = 0
+	end
+
+	if (t or self.t) < 0 then
+		t = 0
+	end
+
+	self.w = w and math.floor(w) or self.w
+	self.t = t and math.floor(t) or self.t
+	self.UserW, self.UserT = self.w, self.t
+
+	timer.Simple(0, function()
+		if self.dock and self.dock ~= NODOCK then
+			self.InvalidateDock = true
+		end
+
+		self:PerformLayoutInternal()
+	end)
+end
+
+function PANELMeta:SetWide(w)
+	return self:SetSize(w, nil)
+end
+
+function PANELMeta:SetTall(t)
+	return self:SetSize(nil, t)
+end
+
+function PANELMeta:GetWide()
+	return self.w
+end
+
+function PANELMeta:GetTall()
+	return self.t
+end
+
+function PANELMeta:SetZPos(z)
+	self.ZPos = z and math.floor(z) or nil
+end
+
+function PANELMeta:SetName(n)
+	if n == "" then
+		self.Name = nil
+	else
+		self.Name = n
+	end
+end
+
+function PANELMeta:GetName(n)
+	return self.Name or ""
+end
+
+function PANELMeta:GetZPos()
+	return self.ZPos
+end
+
+function PANELMeta:GetPos()
+	return self.x, self.y
+end
+
+function PANELMeta:GetSize()
+	return self.w, self.t
+end
+
+function PANELMeta:GetBounds()
+	return self.x, self.y, self.w, self.t
+end
+
+function PANELMeta:GetRealBounds()
+	return self.x, self.y, self.UserW or self.w, self.UserT or self.t
+end
+
+function PANELMeta:CopyBounds(from)
+	self:SetPos(from.x, from.y)
+	self:SetSize(from.w, from.t)
+end
+
+function PANELMeta:CopySize(from)
+	self:SetSize(from.w, from.t)
+end
+
+function PANELMeta:LocalToScreen(x, y)
+	local px, py = 0, 0
+
+	if IsValid(self.parent) then
+		px, py = self.parent:LocalToScreen(self.x, self.y)
+	else
+		px, py = self.x, self.y
+	end
+
+	return x + px, y + py
+end
+
+function PANELMeta:GetVisiblePixels()
+	local px, py = self:LocalToScreen(0, 0)
+	local pw, pt = self:GetSize()
+	pw, pt = px + pw, py + pt
+
+	if IsValid(self.parent) then
+		local prx, pry, prw, prt = self.parent:GetVisiblePixels()
+		if prw <= 0 or prt <= 0 then return 0, 0, 0, 0 end
+		px = math.max(px, prx)
+		py = math.max(py, pry)
+		pw = math.min(prw, pw)
+		pt = math.min(prt, pt)
+		if pw <= px or pt <= py then return 0, 0, 0, 0 end
+	end
+
+	return px, py, pw, pt
+end
+
+function PANELMeta:ScreenToLocal(x, y)
+	local px, py = 0, 0
+	local x0, y0 = self:LocalToScreen(0, 0)
+
+	return x - x0, y - y0
+end
+
+function PANELMeta:GetChildPosition(p)
+	-- return p:
+end
+
+function PANELMeta:CursorPos()
+	return self:ScreenToLocal(input.GetCursorPos())
+end
+
+function PANELMeta:SetAlpha(a)
+	self.alpha = math.Clamp(a, 0, 255) or 255
+end
+
+function PANELMeta:GetAlpha()
+	return self.alpha or 255
+end
+
+function PANELMeta:SetParent(panel)
+	if not ispanel(panel) then return end
+
+	if IsValid(self.parent) then
+		self.parent:RemoveChildren(self)
+	end
+
+	local oldparent = self.parent
+	self.parent = panel
+	self.parent:AddChildren(self)
+	panel:OnChildAdded(self)
+	self:OnParentChanged(oldparent, panel)
+	panel.InvalidateDock = true
+	panel:PerformLayoutInternal()
+end
+
+function PANELMeta:OnChildAdded(child)
+end
+
+function PANELMeta:OnChildRemoved(child)
+end
+
+function PANELMeta:OnParentChanged(old, new)
+end
+
+function PANELMeta:OnFocusChanged()
+end
+
+function PANELMeta:SetFocused(b,but)
+	if b then
+		self:OnMousePressed(but)
+		self.Focused = true
+	else
+		if self.Focused then
+			self:OnFocusChanged()
+		end
+
+		self.Focused = false
+	end
+end
+
+function PANELMeta:GetParent()
+	if not IsValid(self.parent) then return nil end
+
+	return self.parent
+end
+
+function PANELMeta:RemoveChildren(panel)
+	if not ispanel(panel) and not IsValid(panel) then return end
+
+	for k, v in ipairs(self.Children) do
+		if v == panel then
+			table.remove(self.Children, k)
+		end
+	end
+
+	self:OnChildRemoved(panel)
+end
+
+function PANELMeta:AddChildren(panel)
+	if ispanel(panel) and IsValid(panel) then
+		for k, v in ipairs(self.Children) do
+			if v == panel then return ErrorNoHalt("Panel is already parented here") end
+		end
+
+		table.insert(self.Children, panel)
+	end
+end
+
+function PANELMeta:GetChildren()
+	return self.Children
+end
+
+function PANELMeta:IsOnScreen()
+	return not self.offscreen
+end
+
+function PANELMeta:NoClipping(clip)
+	self.noclip = clip
+end
+
+function PANELMeta:Add(panel)
+	return vgui.Create(panel, self)
+end
+
+function PANELMeta:MetaPaint(CutData)
+	if not self.Visible or not self._InitDone then return end
+	local X, Y = self:LocalToScreen(0, 0)
+
+	if X >= ScrW() or Y >= ScrH() or X + self.w <= 0 or Y + self.t <= 0 then
+		self.offscreen = true
+
+		return
+	end
+
+	local CurCutData = table.Copy(CutData or {})
+	table.insert(CurCutData, {X, Y, self.w, self.t})
+	self.offscreen = false
+	local offparent = {0, 0, 0, 0}
+	local offparentSetup = true
+
+	for k, v in ipairs(CurCutData) do
+		love.graphics.intersectScissor(v[1], v[2], v[3], v[4])
+
+		if offparentSetup then
+			offparent = {v[1], v[2], v[1] + v[3], v[2] + v[4]}
+			offparentSetup = false
+		else
+			offparent[1] = math.max(offparent[1], v[1])
+			offparent[2] = math.max(offparent[1], v[2])
+			offparent[3] = math.min(v[1] + v[3], offparent[3])
+			offparent[4] = math.min(v[2] + v[4], offparent[4])
+
+			if offparent[3] <= v[1] or offparent[4] <= v[2] then
+				self.offscreen = true
+				love.graphics.setScissor()
+
+				return
+			end
+		end
+	end
+	self:LayoutThink()
+
+	love.graphics.translate(X, Y)
+	-- surface.SetDrawColor(Color(255, 255, 255, self:GetAlpha()))
+	self:Paint(self.w, self.t)
+	self:PaintOver(self.w, self.t)
+	love.graphics.translate(-X, -Y)
+	local lenc = #self.Children
+	love.graphics.setScissor()
+
+	if lenc ~= 0 then
+		for k, v in ipairs(self.ZChildren or self.Children) do
+			v:MetaPaint(CurCutData)
+		end
+	end
+end
+
+function PANELMeta:Paint(w, t)
+end
+
+function PANELMeta:PaintOver(w, t)
+end
+
+function PANELMeta:GetTable()
+	return getmetatable(self)
+end
+
+NODOCK = 0
+FILL = 1
+LEFT = 2
+RIGHT = 3
+TOP = 4
+BOTTOM = 5
+
+function PANELMeta:DockPadding(a, b, c, d)
+	self.Padding = {a, b, c, d}
+
+	timer.Simple(0, function()
+		self:PerformLayoutInternal(true)
+	end)
+end
+
+function PANELMeta:DockMargin(a, b, c, d)
+	self.Margin = {a, b, c, d}
+
+	timer.Simple(0, function()
+		self:PerformLayoutInternal(true)
+	end)
+end
+
+function PANELMeta:DockApply()
+	self:_PerformLayout(self.w, self.t)
+	local DockMatrix = self.dockMatrix
+	local ZChildren = {}
+
+	for k, v in ipairs(self.Children) do
+		table.insert(ZChildren, k + v:GetZPos(), v)
+	end
+
+	-- ZChildren = table.ReArrange(ZChildren)
+	self.ZChildren = ZChildren
+	local x, y = self.Padding[1], self.Padding[2]
+	local w, t = self.w - x - self.Padding[3], self.t - y - self.Padding[4]
+
+	for k, panel in pairs(ZChildren) do
+		local oW, oT = panel.UserW, panel.UserT
+
+		if panel.dock == LEFT then
+			DockMatrix[panel] = {x + panel.Margin[1], y + panel.Margin[2], oW, t - panel.Margin[2] - panel.Margin[4]}
+			x, w = DockMatrix[panel][1] + DockMatrix[panel][3] + panel.Margin[3], w - oW - panel.Margin[1]
+		elseif panel.dock == TOP then
+			DockMatrix[panel] = {x + panel.Margin[1], y + panel.Margin[2], w - panel.Margin[1] - panel.Margin[3], oT}
+			y, t = DockMatrix[panel][2] + DockMatrix[panel][4] + panel.Margin[4], t - oT - panel.Margin[2]
+		elseif panel.dock == RIGHT then
+			DockMatrix[panel] = {x + w - oW - panel.Margin[3], y + panel.Margin[2], oW, t - panel.Margin[2] - panel.Margin[4]}
+			w = w - oW - panel.Margin[1] - panel.Margin[3]
+		elseif panel.dock == BOTTOM then
+			DockMatrix[panel] = {x + panel.Margin[1], y + t - oT - panel.Margin[4], w - panel.Margin[1] - panel.Margin[3], oT}
+			t = t - oT - panel.Margin[2]
+		end
+	end
+
+	for k, panel in pairs(ZChildren) do
+		if panel.dock == FILL then
+			DockMatrix[panel] = {x + panel.Margin[1], y + panel.Margin[2], w - panel.Margin[1] - panel.Margin[3], t - panel.Margin[2] - panel.Margin[4]}
+		end
+	end
+end
+
+function PANELMeta:LayoutThink(onlyone)
+	if self.LayoutInvalid then
+		self.LayoutInvalid = false
+		self:PerformLayoutInternal()
+	end
+
+	if onlyone then return end
+
+	if self.PerfNow == 2 then
+		self:PerformLayoutInternal(true)
+		self.PerfNow = nil
+	elseif self.PerfNow ~= nil then
+		self.PerfNow = self.PerfNow + 1
+	end
+end
+
+function PANELMeta:PerformLayoutInternal(b)
+	if b then
+		self:_PerformLayout(self.w, self.t)
+
+		for k, v in ipairs(self.Children) do
+			if v:IsValid() then
+				v:PerformLayoutInternal()
+			end
+		end
+
+		if self.parent then
+			self.parent:_PerformLayout(self.parent.w, self.parent.t)
+		end
+
+		self.InvalidateDock = true
+		self:DockPerform()
+	else
+		self.PerfNow = self.PerfNow or 0
+	end
+end
+
+function PANELMeta:_PerformLayout(w, t)
+	-- if self._InitDone then
+	-- else
+	-- timer.Simple(0,function() self:PerformLayout(w, t) end)
+	-- end
+	return self:PerformLayout(w, t)
+end
+
+function PANELMeta:PerformLayout(w, t)
+end
+
+function PANELMeta:DockPerform()
+	if (not self.dock or self.dock == NODOCK) or not self.parent then return end
+	if not self.InvalidateDock then return end
+	self.InvalidateDock = false
+	self.parent:DockApply()
+	local DockMatrix = self.parent.dockMatrix
+	if not DockMatrix[self] then return end
+	local data = DockMatrix[self]
+	self:SetPos(data[1], data[2])
+	self:SetSize(data[3], data[4])
+
+	for k, v in ipairs(self.Children) do
+		if v:IsValid() then
+			v:PerformLayoutInternal()
+		end
+	end
+end
+
+function PANELMeta:InvalidateLayout(now)
+	self.LayoutInvalid = true
+
+	if now then
+		self:LayoutThink(true)
+	end
+end
+
+function PANELMeta:InvalidateParent(now)
+	if not self.parent then return false end
+	self.parent.LayoutInvalid = true
+
+	if now then
+		self.parent:LayoutThink()
+	end
+end
+
+function PANELMeta:Dock(dock)
+	if not self.parent then return end
+	self.dock = dock
+
+	timer.Simple(0, function()
+		self:PerformLayoutInternal(true)
+	end)
+end
+
+function PANELMeta:SizeToChildren(sizeW, sizeH)
+	sizeW, sizeH = sizeW or false, sizeH or false
+	local minx, miny, maxx, maxy = 0, 0, 0, 0
+
+	for k, v in ipairs(self:GetChildren()) do
+		local x, y, w, t = v:GetRealBounds()
+
+		if x < minx then
+			minx = x
+		end
+
+		if y < miny then
+			miny = y
+		end
+
+		if x + w > maxx then
+			maxx = x + w
+		end
+
+		if y + t > maxy then
+			maxy = y + t
+		end
+	end
+
+	self:SetSize(sizeW and maxx or self.w, sizeH and maxy or self.t)
+end
+
+function PANELMeta:AnimationThink()
+end
+
+function PANELMeta:AddErp(mode, time, from, to)
+	if not self.ErpList then
+		function self:AnimationThink()
+			for k, v in pairs(self.ErpList) do
+				if not v.on then break end
+				self[v.id] = v.func(SysTime() - v.systime, v.time, v.lastval or (v.switch and v.from or v.to), v.switch and v.to or v.from)
+			end
+
+			if istable(self.ThinkHook) then
+				for k, v in ipairs(self.ThinkHook) do
+					self[v](self)
+				end
+			end
+		end
+	end
+
+	if not istable(self.ErpList) then
+		self.ErpList = {}
+	end
+
+	table.insert(self.ErpList, {
+		id = "Erp_" .. (#self.ErpList + 1),
+		func = mode,
+		time = time,
+		from = from,
+		to = to,
+		switch = true,
+		systime = SysTime(),
+		on = true
+	})
+
+	return "Erp_" .. (table.Count(self.ErpList))
+end
+
+function PANELMeta:AddThinkHook(func)
+	if not self.ErpList then
+		function self:AnimationThink()
+			if istable(self.ThinkHook) then
+				for k, v in pairs(self.ThinkHook) do
+					self[v](self)
+				end
+			end
+		end
+	end
+
+	if not istable(self.ThinkHook) then
+		self.ThinkHook = {}
+	end
+
+	table.insert(self.ThinkHook, func)
+end
+
+function PANELMeta:RemoveThinkHook(func)
+	for k, v in ipairs(self.ThinkHook) do
+		if v == func then
+			table.remove(self.ThinkHook, k)
+
+			return
+		end
+	end
+end
+
+function PANELMeta:SetErpRange(id, a, b)
+	if not istable(self.ErpList) then return end
+	if not istable(self.ErpList[id]) then return end
+	self.ErpList[id].from = a
+	self.ErpList[id].to = b
+end
+
+function PANELMeta:GetErpRange(id)
+	if not istable(self.ErpList) then return end
+	if not istable(self.ErpList[id]) then return end
+
+	return self.ErpList[id].from, self.ErpList[id].to
+end
+
+function PANELMeta:SetErpMode(id, func)
+	if not istable(self.ErpList) then return end
+	if not istable(self.ErpList[id]) then return end
+	self.ErpList[id].func = func
+end
+
+function PANELMeta:IsErpCompleted(id)
+	if not istable(self.ErpList) then return end
+	if not istable(self.ErpList[id]) then return end
+
+	return SysTime() - self.ErpList[id].systime > self.ErpList[id].time
+end
+
+function PANELMeta:SetErpOn(id, b)
+	if not istable(self.ErpList) then return end
+	if not istable(self.ErpList[id]) then return end
+	self.ErpList[id].on = b
+end
+
+function PANELMeta:SetErpEndTime(id, a)
+	if not istable(self.ErpList) then return end
+	if not istable(self.ErpList[id]) then return end
+	self.ErpList[id].time = a
+end
+
+function PANELMeta:DeleteErp(id)
+	if not istable(self.ErpList) then return end
+	if not istable(self.ErpList[id]) then return end
+	table.remove(self.ErpList, id)
+	self["Erp_" .. id] = nil
+end
+
+function PANELMeta:DeleteAllErp()
+	if not istable(self.ErpList) then return end
+
+	for k, v in pairs(self.ErpList) do
+		self.ErpList[k] = nil
+		self["Erp_" .. id] = nil
+	end
+end
+
+function PANELMeta:SwitchErp(id, bool)
+	if not istable(self.ErpList) then return end
+	if not istable(self.ErpList[id]) then return end
+
+	if self.ErpList[id].switch ~= bool then
+		self.ErpList[id].systime = SysTime()
+		self.ErpList[id].switch = bool
+		self.ErpList[id].lastval = self[self.ErpList[id].id]
+	end
+end
+
+function PANELMeta:GetErpTime(id)
+	if not istable(self.ErpList) then return end
+	if not istable(self.ErpList[id]) then return end
+
+	return SysTime() - (self.ErpList[id].systime or 0)
+end
+
+function PANELMeta:FeedErpClock(id)
+	if not istable(self.ErpList) then return end
+	if not istable(self.ErpList[id]) then return end
+	self.ErpList[id].systime = SysTime()
+end
+
+function PANELMeta:SetErpClock(id, s)
+	if not istable(self.ErpList) then return end
+	if not istable(self.ErpList[id]) then return end
+	self.ErpList[id].systime = s
+end
+
+function PANELMeta:GetErpClock(id)
+	if not istable(self.ErpList) then return end
+	if not istable(self.ErpList[id]) then return end
+
+	return self.ErpList[id].systime
+end
+
+function PANELMeta:GetErpState(id)
+	if not istable(self.ErpList) then return end
+	if not istable(self.ErpList[id]) then return end
+
+	return self.ErpList[id].switch or false
+end
