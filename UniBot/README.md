@@ -1,4 +1,4 @@
-*See also: **[Unversity admission advisor](https://github.com/GitSparTV/GitSparTV/blob/main/lua-portfolio.md#unversity-admission-advisor)***
+*See also: **[Unversity admission advisor](https://github.com/GitSparTV/GitSparTV/blob/main/lua-portfolio.md#university-admission-advisor)***
 
 Personal bot made with VK API running in Garry's Mod server instance.
 
