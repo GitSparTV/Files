@@ -9,4 +9,9 @@ Diff class consists of diff results, the result is added once Compare methods is
 
 The bot was first written in Lua then rewritten in C++. Development was in tight deadline, because the admission process is not long.
 
+Uses:
+- https://github.com/PG1003/lex
+- https://github.com/reo7sp/tgbot-cpp
+- C++17
+
 <img width="555" src="https://user-images.githubusercontent.com/5685050/204158820-5daf5d6a-02fc-464a-bb3d-6aeea535f4b4.png">
