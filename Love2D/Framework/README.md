@@ -32,3 +32,5 @@ https://user-images.githubusercontent.com/5685050/140625943-36c45fa9-866b-4dfe-a
 <img src="https://user-images.githubusercontent.com/5685050/140626001-197aa81d-9d8f-41e0-bd8e-40bfe3c81b56.png" width="20%" height="20%">
 
 https://user-images.githubusercontent.com/5685050/140626059-33b338b6-a52a-4c67-89dc-c1985c35d9b7.mov
+
+[![HitCount](https://hits.dwyl.com/GitSparTV/Love2DFramework.svg?style=flat-square)](http://hits.dwyl.com/GitSparTV/Love2DFramework)
